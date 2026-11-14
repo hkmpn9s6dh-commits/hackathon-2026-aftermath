@@ -1,0 +1,678 @@
+@import '@fontsource-variable/newsreader/wght.css';
+@import '@fontsource-variable/jetbrains-mono/wght.css';
+
+:root {
+  --paper: #f3ecdd;
+  --paper-deep: #ece2cd;
+  --ink: #1f1b16;
+  --ink-mid: #423a30;
+  --ink-soft: #7c6d58;
+  --rule: #cfc0a4;
+  --rule-soft: #e1d6bf;
+  --thread: #a8321f;
+  --faded: #b9a98d;
+  --serif: 'Newsreader Variable', 'Iowan Old Style', Georgia, serif;
+  --mono: 'JetBrains Mono Variable', ui-monospace, 'SF Mono', Menlo, monospace;
+  --panel: 396px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  min-height: 0;
+}
+
+/* ---------------- masthead ---------------- */
+
+.masthead {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px;
+  padding: 20px 40px 18px;
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.brand h1 {
+  margin: 0;
+  font-size: 44px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 0.9;
+}
+
+.brand .dot {
+  color: #d4482f;
+}
+
+.tagline {
+  margin: 9px 0 0;
+  font-size: 14px;
+  font-style: italic;
+  color: rgba(243, 236, 221, 0.62);
+}
+
+.seeds {
+  display: flex;
+  gap: 8px;
+}
+
+.seed {
+  text-align: left;
+  border: 1px solid rgba(243, 236, 221, 0.22);
+  background: transparent;
+  color: rgba(243, 236, 221, 0.62);
+  padding: 7px 12px;
+  cursor: pointer;
+  font-family: var(--serif);
+  transition: border-color 140ms ease, color 140ms ease, background 140ms ease;
+}
+
+.seed b {
+  display: block;
+  font-size: 14.5px;
+  font-weight: 500;
+  color: inherit;
+}
+
+.seed span {
+  display: block;
+  font-family: var(--mono);
+  font-size: 8.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-top: 2px;
+  opacity: 0.75;
+}
+
+.seed:hover {
+  border-color: rgba(243, 236, 221, 0.5);
+  color: var(--paper);
+}
+
+.seed.on {
+  background: var(--paper);
+  color: var(--ink);
+  border-color: var(--paper);
+}
+
+.seed.on span {
+  opacity: 0.65;
+}
+
+/* ---------------- stage ---------------- */
+
+.stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--panel);
+  flex: 1;
+  min-height: 0;
+}
+
+.board {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 18px 8px 8px 40px;
+  background:
+    radial-gradient(110% 70% at 20% 0%, rgba(255, 252, 244, 0.7), transparent 60%),
+    var(--paper);
+}
+
+.claim {
+  border-left: 2px solid var(--ink);
+  padding-left: 14px;
+}
+
+.claim .line {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.35;
+  color: var(--ink-mid);
+  max-width: 74ch;
+}
+
+.claim .line + .line {
+  margin-top: 4px;
+}
+
+.claim b {
+  font-size: 25px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  font-variant-numeric: lining-nums;
+}
+
+.claim b.red {
+  color: var(--thread);
+}
+
+.chart {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+}
+
+.cascade {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.legend {
+  display: flex;
+  gap: 22px;
+  margin: 0;
+  padding: 6px 0 0;
+  font-family: var(--mono);
+  font-size: 8.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.legend .lg {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.legend .sw {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.legend .sw.silent {
+  background: var(--thread);
+}
+
+.legend .sw.aware {
+  background: var(--ink);
+  opacity: 0.6;
+}
+
+.legend .sw.before {
+  background: var(--faded);
+}
+
+/* ---------------- chart marks ---------------- */
+
+.year-rule {
+  stroke: var(--rule-soft);
+  stroke-width: 1;
+  opacity: 0.55;
+}
+
+.year-tick,
+.row-label,
+.mark {
+  font-family: var(--mono);
+  fill: var(--ink-soft);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.year-tick {
+  font-size: 8px;
+  text-anchor: middle;
+}
+
+.row-label {
+  font-size: 8.5px;
+  text-anchor: end;
+}
+
+.row-rule {
+  stroke: var(--rule-soft);
+  stroke-width: 1;
+  opacity: 0.45;
+}
+
+.edge {
+  fill: none;
+  stroke: #8b7c66;
+  stroke-width: 0.7;
+  opacity: 0.16;
+}
+
+.edge.is-silent {
+  stroke: var(--thread);
+  opacity: 0.14;
+}
+
+.edge.is-hot {
+  stroke: var(--thread);
+  stroke-width: 1.8;
+  opacity: 0.9;
+}
+
+.work .dot {
+  fill: var(--ink);
+  opacity: 0.5;
+}
+
+.work .hit {
+  fill: transparent;
+  cursor: pointer;
+}
+
+.work.is-silent .dot {
+  fill: var(--thread);
+  opacity: 0.78;
+}
+
+.work.is-predates .dot {
+  fill: var(--faded);
+  opacity: 0.7;
+}
+
+.work.is-seed .dot {
+  fill: var(--ink);
+  opacity: 1;
+}
+
+.work.is-notice .dot {
+  fill: var(--paper);
+  stroke: var(--ink);
+  stroke-width: 1.2;
+}
+
+.work.is-selected .dot {
+  stroke: var(--ink);
+  stroke-width: 2;
+  opacity: 1;
+}
+
+.work.is-on-path .dot {
+  stroke: var(--thread);
+  stroke-width: 1.6;
+  opacity: 1;
+}
+
+.work:hover .dot {
+  opacity: 1;
+  stroke: var(--ink);
+  stroke-width: 1;
+}
+
+.work .mark {
+  font-size: 7.5px;
+  text-anchor: middle;
+  fill: var(--ink);
+  opacity: 0.75;
+}
+
+/* ---------------- panel ---------------- */
+
+.panel {
+  border-left: 1px solid var(--ink);
+  background: #f8f3e8;
+  padding: 20px 28px 24px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.panel > * {
+  flex: 0 0 auto;
+}
+
+.story {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink-mid);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 14px;
+}
+
+.story .source {
+  display: block;
+  margin-top: 6px;
+  font-family: var(--mono);
+  font-size: 8.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-style: normal;
+}
+
+.card {
+  min-height: 150px;
+}
+
+.card .hint {
+  margin: 0;
+  font-size: 14px;
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+.card .kicker {
+  margin: 0 0 8px;
+  font-family: var(--mono);
+  font-size: 8.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.tag {
+  border: 1px solid var(--rule);
+  padding: 1px 5px;
+  margin-right: 6px;
+}
+
+.tag.red {
+  color: var(--thread);
+  border-color: rgba(168, 50, 31, 0.4);
+}
+
+.tag.faded {
+  color: var(--ink-soft);
+}
+
+.card h2 {
+  margin: 0;
+  font-size: 21px;
+  line-height: 1.24;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.card .byline {
+  margin: 8px 0 0;
+  font-size: 12.5px;
+  color: var(--ink-soft);
+}
+
+.card .verdict {
+  margin: 12px 0 0;
+  font-size: 14.5px;
+  line-height: 1.5;
+  border-top: 1.5px solid var(--ink);
+  padding-top: 10px;
+}
+
+.card .facts {
+  display: flex;
+  gap: 18px;
+  margin: 12px 0 0;
+  padding: 0;
+}
+
+.card .facts dt {
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.card .facts dd {
+  margin: 2px 0 0;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.card .chain {
+  margin: 12px 0 0;
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: var(--ink-mid);
+}
+
+.card .chain .arrow {
+  color: var(--rule);
+  padding: 0 3px;
+}
+
+.card .doi {
+  margin: 10px 0 0;
+  font-family: var(--mono);
+  font-size: 10px;
+}
+
+.card .doi a {
+  color: var(--thread);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(168, 50, 31, 0.35);
+}
+
+.rank {
+  border-top: 1.5px solid var(--ink);
+  padding-top: 12px;
+}
+
+.rank h2 {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+
+.rank-note {
+  margin: 5px 0 8px;
+  font-size: 12px;
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+.rank ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.rank li {
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.rank li:last-child {
+  border-bottom: 0;
+}
+
+.rank button {
+  display: flex;
+  gap: 9px;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  padding: 7px 0;
+  cursor: pointer;
+  font-family: var(--serif);
+}
+
+.rank .num {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--rule);
+  padding-top: 3px;
+}
+
+.rank .text b {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--ink);
+}
+
+.rank .text em {
+  display: block;
+  font-style: normal;
+  font-family: var(--mono);
+  font-size: 8.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-top: 3px;
+}
+
+.rank button:hover .text b {
+  color: var(--thread);
+}
+
+.query {
+  border-top: 1px solid var(--rule);
+  padding-top: 11px;
+}
+
+.query summary {
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 8.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  list-style: none;
+}
+
+.query summary::-webkit-details-marker {
+  display: none;
+}
+
+.query summary::before {
+  content: '+ ';
+}
+
+.query[open] summary::before {
+  content: '– ';
+}
+
+.query pre {
+  margin: 10px 0 0;
+  padding: 11px 12px;
+  background: var(--paper-deep);
+  max-height: 180px;
+  overflow: auto;
+}
+
+.query code {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  line-height: 1.6;
+  color: #3a3026;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.query-meta {
+  margin: 7px 0 0;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+}
+
+@media (max-width: 1080px) {
+  .stage {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(360px, 1fr) auto;
+  }
+  .panel {
+    border-left: 0;
+    border-top: 1px solid var(--ink);
+  }
+  .masthead {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .board {
+    padding-left: 20px;
+  }
+  .legend {
+    display: none;
+  }
+}
+
+/* the fan from the retraction is the one edge family worth drawing boldly;
+   everything deeper is texture, so the dots can be the picture */
+.edge {
+  stroke: #8b7c66;
+  stroke-width: 0.5;
+  opacity: 0.07;
+}
+
+.edge.is-silent {
+  stroke: var(--thread);
+  opacity: 0.07;
+}
+
+.edge.is-fan {
+  stroke: var(--ink-soft);
+  stroke-width: 0.7;
+  opacity: 0.2;
+}
+
+.work .dot {
+  opacity: 0.62;
+}
+
+.work.is-silent .dot {
+  opacity: 0.92;
+}
+
+.work.is-predates .dot {
+  fill: #c6b9a1;
+  opacity: 0.85;
+}
+
+/* the year the retraction landed: everything left of it could not have known */
+.retracted-rule {
+  stroke: var(--thread);
+  stroke-width: 1;
+  stroke-dasharray: 3 4;
+  opacity: 0.6;
+}
+
+.retracted-label {
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  fill: var(--thread);
+  opacity: 0.9;
+}
+
+.work.is-predates .dot {
+  fill: #cabda6;
+  opacity: 0.6;
+}
+
+.edge.is-fan {
+  opacity: 0.13;
+}
